@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Doctor Application</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            background: linear-gradient(to right, #4b6cb7, #182848);
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .disclaimer {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+            color: #856404;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            border-top: 5px solid #4b6cb7;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .service-card h3 {
+            color: #182848;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        .service-card p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .service-icon {
+            font-size: 2em;
+            margin-bottom: 15px;
+            color: #4b6cb7;
+        }
+
+        .input-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .input-section h3 {
+            color: #182848;
+            margin-bottom: 15px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            resize: vertical;
+            min-height: 100px;
+            margin-bottom: 15px;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #4b6cb7;
+        }
+
+        button {
+            background: linear-gradient(to right, #4b6cb7, #182848);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+            margin: 5px;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .result-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+
+        .result-section h3 {
+            color: #182848;
+            margin-bottom: 15px;
+        }
+
+        .result-content {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 15px;
+            line-height: 1.6;
+        }
+
+        .emergency {
+            background: #dc3545;
+            color: white;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 30px;
+            font-weight: bold;
+        }
+
+        .menu-controls {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .menu-controls button {
+            margin: 0 10px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="service-icon">🏥</div>
+            <h1>Virtual Doctor Assistant</h1>
+            <p class="subtitle">General Health Information & Guidance</p>
+        </div>
+
+        <div class="disclaimer">
+            ⚠️ <strong>Important Disclaimer:</strong> This application provides general health information only. 
+            It is not a substitute for professional medical advice, diagnosis, or treatment. 
+            For medical emergencies, call your local emergency number immediately.
+        </div>
+
+        <div class="main-content">
+            <div class="service-card" onclick="selectService('symptom')">
+                <div class="service-icon">🔍</div>
+                <h3>Symptom Checker</h3>
+                <p>Describe your symptoms for general guidance and recommendations.</p>
+            </div>
+
+            <div class="service-card" onclick="selectService('guidance')">
+                <div class="service-icon">📚</div>
+                <h3>Health Guidance</h3>
+                <p>General wellness tips, exercise recommendations, and mental health advice.</p>
+            </div>
+
+            <div class="service-card" onclick="selectService('medicine')">
+                <div class="service-icon">💊</div>
+                <h3>Medicine Information</h3>
+                <p>General information about common medications (consult doctor before use).</p>
+            </div>
+
+            <div class="service-card" onclick="selectService('firstaid')">
+                <div class="service-icon">🩹</div>
+                <h3>First Aid Guidance</h3>
+                <p>Basic first aid procedures and emergency contact information.</p>
+            </div>
+        </div>
+
+        <div class="input-section" id="inputSection">
+            <h3 id="serviceTitle">Select a Service Above</h3>
+            <textarea id="userInput" placeholder="Describe your concern here..."></textarea>
+            <div class="menu-controls">
+                <button onclick="submitQuery()">Get Information</button>
+                <button onclick="clearInput()">Clear</button>
+                <button onclick="showMainMenu()">Back to Menu</button>
+            </div>
+        </div>
+
+        <div class="result-section" id="resultSection">
+            <h3>Virtual Doctor's Response</h3>
+            <div class="result-content" id="resultContent">
+                <!-- Results will appear here -->
+            </div>
+            <div class="menu-controls" style="margin-top: 20px;">
+                <button onclick="showMainMenu()">Back to Menu</button>
+                <button onclick="clearResults()">Clear Results</button>
+            </div>
+        </div>
+
+        <div class="emergency">
+            🚨 In case of emergency, call 911 or your local emergency number immediately!
+        </div>
+
+        <div class="footer">
+            <p>Virtual Doctor Application v1.0</p>
+            <p>This is an educational tool. Always consult healthcare professionals for medical advice.</p>
+            <p>© 2024 Virtual Doctor Assistant</p>
+        </div>
+    </div>
+
+    <script>
+        let currentService = '';
+
+        // Sample responses based on service selection
+        const serviceResponses = {
+            'symptom': {
+                title: 'Symptom Checker',
+                response: (input) => {
+                    let response = '<h4>Symptom Analysis:</h4><ul>';
+                    
+                    if (input.toLowerCase().includes('headache')) {
+                        response += '<li><strong>For headaches:</strong> Rest in quiet room, stay hydrated, consider pain relief if appropriate</li>';
+                    }
+                    if (input.toLowerCase().includes('fever')) {
+                        response += '<li><strong>For fever:</strong> Monitor temperature, stay hydrated, seek help if over 103°F</li>';
+                    }
+                    if (input.toLowerCase().includes('cough') || input.toLowerCase().includes('cold')) {
+                        response += '<li><strong>For cough/cold:</strong> Drink warm fluids, rest, use honey for cough relief</li>';
+                    }
+                    
+                    response += '</ul><p><strong>⚠️ Important:</strong> This is general guidance only. Consult a doctor for proper diagnosis.</p>';
+                    return response;
+                }
+            },
+            'guidance': {
+                title: 'Health Guidance',
+                response: () => `
+                    <h4>General Health Guidelines:</h4>
+                    <ul>
+                        <li>Stay hydrated: Drink 8+ glasses of water daily</li>
+                        <li>Balanced diet: Fruits, vegetables, whole grains</li>
+                        <li>Exercise: 30 minutes most days</li>
+                        <li>Sleep: 7-9 hours per night</li>
+                        <li>Stress management: Practice relaxation techniques</li>
+                        <li>Regular check-ups: Annual screenings recommended</li>
+                    </ul>
+                    <p><strong>Remember:</strong> Prevention is better than cure!</p>
+                `
+            },
+            'medicine': {
+                title: 'Medicine Information',
+                response: (input) => `
+                    <h4>General Medicine Safety Information:</h4>
+                    <p>Based on your concern: "${input}"</p>
+                    <ul>
+                        <li><strong>Always consult a doctor or pharmacist</strong> before taking any medication</li>
+                        <li>Read labels carefully and check expiration dates</li>
+                        <li>Be aware of potential interactions</li>
+                        <li>Store medications properly</li>
+                        <li>Never share prescription medications</li>
+                    </ul>
+                    <p><strong>⚠️ Important:</strong> Do not self-medicate without professional advice.</p>
+                `
+            },
+            'firstaid': {
+                title: 'First Aid Information',
+                response: () => `
+                    <h4>Basic First Aid Guidelines:</h4>
+                    <ul>
+                        <li><strong>Burns:</strong> Cool with running water for 20 minutes</li>
+                        <li><strong>Cuts:</strong> Clean with water, apply pressure, bandage</li>
+                        <li><strong>Choking:</strong> Perform Heimlich maneuver if trained</li>
+                        <li><strong>CPR:</strong> Call 911 first, then begin compressions</li>
+                        <li><strong>Sprains:</strong> RICE method (Rest, Ice, Compression, Elevation)</li>
+                    </ul>
+                    <h4>Emergency Contacts:</h4>
+                    <ul>
+                        <li>Emergency Services: 911</li>
+                        <li>Poison Control: 1-800-222-1222</li>
+                        <li>National Suicide Prevention: 988</li>
+                    </ul>
+                    <p><strong>💡 Tip:</strong> Take a certified first aid course for proper training.</p>
+                `
+            }
+        };
+
+        function selectService(service) {
+            currentService = service;
+            const serviceInfo = serviceResponses[service];
+            document.getElementById('serviceTitle').textContent = serviceInfo.title;
+            document.getElementById('userInput').placeholder = 
+                service === 'symptom' || service === 'medicine' 
+                ? "Describe your concern here..." 
+                : "Additional notes (optional)...";
+            document.getElementById('inputSection').style.display = 'block';
+            document.getElementById('resultSection').style.display = 'none';
+            document.getElementById('userInput').focus();
+        }
+
+        function submitQuery() {
+            if (!currentService) {
+                alert('Please select a service first');
+                return;
+            }
+
+            const userInput = document.getElementById('userInput').value;
+            const serviceInfo = serviceResponses[currentService];
+            
+            document.getElementById('resultContent').innerHTML = serviceInfo.response(userInput);
+            document.getElementById('resultSection').style.display = 'block';
+            
+            // Scroll to results
+            document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function showMainMenu() {
+            currentService = '';
+            document.getElementById('serviceTitle').textContent = 'Select a Service Above';
+            document.getElementById('userInput').value = '';
+            document.getElementById('resultSection').style.display = 'none';
+            document.getElementById('inputSection').style.display = 'block';
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function clearInput() {
+            document.getElementById('userInput').value = '';
+        }
+
+        function clearResults() {
+            document.getElementById('resultContent').innerHTML = '';
+            document.getElementById('resultSection').style.display = 'none';
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('inputSection').style.display = 'block';
+            document.getElementById('resultSection').style.display = 'none';
+        });
+    </script>
+</body>
+</html>
